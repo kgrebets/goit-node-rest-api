@@ -44,9 +44,30 @@ export const updateContact = async (req, res) => {
     body.email,
     body.phone
   );
-  
+
   if (!updatedContact) {
     throw HttpError(404);
   }
+  res.status(200).json(updatedContact);
+};
+
+export const updateFavorite = async (req, res) => {
+  const { id } = req.params;
+  const { favorite } = req.body;
+
+  if (favorite === undefined) {
+    throw HttpError(400, "Not valid favorite");
+  }
+
+  const contact = await contactsService.getContactById(id);
+  if (!contact) {
+    throw HttpError(404);
+  }
+
+  const updatedContact = await contactsService.updateStatusContact(
+    id,
+    favorite
+  );
+
   res.status(200).json(updatedContact);
 };

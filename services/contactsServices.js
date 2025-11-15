@@ -30,8 +30,14 @@ export const removeContact = async (contactId) => {
   return contact;
 };
 
-export const updateContact = async (id, name, email, phone, favorite) => {
-  const contact = await Contact.findByPk(id);
+export const updateContact = async (
+  contactId,
+  name,
+  email,
+  phone,
+  favorite
+) => {
+  const contact = await Contact.findByPk(contactId);
 
   if (!contact) {
     return null;
@@ -43,5 +49,17 @@ export const updateContact = async (id, name, email, phone, favorite) => {
   if (favorite !== undefined) contact.favorite = favorite;
 
   await contact.save();
+  return contact;
+};
+
+export const updateStatusContact = async (contactId, favorite) => {
+  const contact = await Contact.findByPk(contactId);
+  if (!contact) {
+    throw new Error(`Contact id: ${contactId} not existed`);
+  }
+
+  contact.favorite = favorite;
+  await contact.save();
+
   return contact;
 };
