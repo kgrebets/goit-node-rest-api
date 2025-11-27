@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import sequelize from "./sequelize.js";
+import sequelize from "../sequelize.js";
 
 export const Contact = sequelize.define("contact", {
   id: {
@@ -22,5 +22,9 @@ export const Contact = sequelize.define("contact", {
   favorite: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
+  },
+  owner: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
 });
