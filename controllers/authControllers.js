@@ -2,6 +2,8 @@ import * as userService from "../services/userServices.js";
 import * as passwordService from "../services/passwordService.js";
 import * as tokenService from "../services/tokenService.js";
 import HttpError from "../helpers/HttpError.js";
+import path from "node:path";
+import fs from "node:fs/promises";
 
 export const register = async (req, res) => {
   const { password, email } = req.body;
@@ -46,7 +48,14 @@ export const getCurrentUser = async (req, res) => {
 
 export const logout = async (req, res) => {
   const user = req.user;
-  await userService.updateUser(user.id, undefined, undefined, undefined, null);
+  await userService.updateUser(
+    user.id,
+    undefined,
+    undefined,
+    undefined,
+    null,
+    undefined
+  );
 
   res.status(204).send();
 };
@@ -55,13 +64,46 @@ const getTokenResult = async (user) => {
   const payload = { id: user.id };
   const token = tokenService.createToken(payload);
 
-  await userService.updateUser(user.id, undefined, undefined, undefined, token);
+  await userService.updateUser(
+    user.id,
+    undefined,
+    undefined,
+    undefined,
+    token,
+    undefined
+  );
 
   return {
     token,
-    user: {      
+    user: {
       email: user.email,
-      subscription: user.subscription
+      subscription: user.subscription,
+      avatarURL: user.avatarURL,
     },
   };
+};
+
+export const updateAvatar = async (req, res) => {
+  const user = req.user;
+  const file = req.file;
+
+  let avatar = null;
+  if (file) {
+    const avatarsDir = path.resolve("public", "avatars");
+    const newPath = path.join(avatarsDir, file.filename);
+    await fs.rename(file.path, newPath);
+    avatar = path.join("avatars", file.filename);
+  }
+
+  console.log("Avatar updated:", avatar);
+  await userService.updateUser(
+    user.id,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    avatar
+  );
+
+  res.status(200).send();
 };

@@ -1,3 +1,4 @@
+import gravatar from "gravatar";
 import { User } from "../db/model/user.js";
 
 export const listUsers = async () => {
@@ -14,11 +15,14 @@ export const getUserByEmail = async (email) => {
 };
 
 export const addUser = async (password, email, subscription, token) => {
+  const avatarURL = gravatar.url(email, { s: "250", d: "mp" }, true);
+
   const newUser = await User.create({
     password,
     email,
     subscription,
     token,
+    avatarURL,
   });
 
   return newUser;
@@ -40,7 +44,8 @@ export const updateUser = async (
   password,
   email,
   subscription,
-  token
+  token,
+  avatarURL
 ) => {
   const user = await User.findByPk(userId);
 
@@ -52,6 +57,7 @@ export const updateUser = async (
   if (email !== undefined) user.email = email;
   if (subscription !== undefined) user.subscription = subscription;
   if (token !== undefined) user.token = token;
+  if (avatarURL !== undefined) user.avatarURL = avatarURL;
 
   await user.save();
   return user;
