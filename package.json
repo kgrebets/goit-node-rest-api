@@ -2,6 +2,9 @@
   "name": "goit-node-rest-api",
   "type": "module",
   "scripts": {
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
+    "test:file": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest functions/caclWeightIndex.test.js",
     "start": "node ./app.js",
     "dev": "nodemon ./app.js"
   },
@@ -22,6 +25,12 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
+    "jest": "^30.2.0",
     "nodemon": "^3.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {}
   }
 }

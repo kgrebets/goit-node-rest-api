@@ -1,6 +1,6 @@
-import * as userService from "../services/userServices.js";
-import * as passwordService from "../services/passwordService.js";
-import * as tokenService from "../services/tokenService.js";
+import userService from "../services/userService.js";
+import passwordService from "../services/passwordService.js";
+import tokenService from "../services/tokenService.js";
 import HttpError from "../helpers/HttpError.js";
 import path from "node:path";
 import fs from "node:fs/promises";

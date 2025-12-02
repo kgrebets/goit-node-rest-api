@@ -1,9 +1,16 @@
 import bcrypt from "bcrypt";
 
-export const hashPassword = async (password) => {
+const hashPassword = async (password) => {
   return await bcrypt.hash(password, 10);
 };
 
-export const checkPassword = async (password, hashedPassword) => {
+const checkPassword = async (password, hashedPassword) => {
   return await bcrypt.compare(password, hashedPassword);
 };
+
+const passwordService = {
+  hashPassword,
+  checkPassword,
+};
+
+export default passwordService;

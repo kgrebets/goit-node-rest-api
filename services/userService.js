@@ -1,20 +1,20 @@
 import gravatar from "gravatar";
 import { User } from "../db/model/user.js";
 
-export const listUsers = async () => {
+const listUsers = async () => {
   const users = await User.findAll();
   return users;
 };
 
-export const getUserById = async (userId) => {
+const getUserById = async (userId) => {
   return await User.findByPk(userId);
 };
 
-export const getUserByEmail = async (email) => {
+const getUserByEmail = async (email) => {
   return await User.findOne({ where: { email } });
 };
 
-export const addUser = async (password, email, subscription, token) => {
+const addUser = async (password, email, subscription, token) => {
   const avatarURL = gravatar.url(email, { s: "250", d: "mp" }, true);
 
   const newUser = await User.create({
@@ -28,7 +28,7 @@ export const addUser = async (password, email, subscription, token) => {
   return newUser;
 };
 
-export const removeUser = async (userId) => {
+const removeUser = async (userId) => {
   const user = await User.findByPk(userId);
 
   if (!user) {
@@ -39,7 +39,7 @@ export const removeUser = async (userId) => {
   return user;
 };
 
-export const updateUser = async (
+const updateUser = async (
   userId,
   password,
   email,
@@ -63,7 +63,7 @@ export const updateUser = async (
   return user;
 };
 
-export const updateStatusContact = async (contactId, favorite) => {
+const updateStatusContact = async (contactId, favorite) => {
   const contact = await Contact.findByPk(contactId);
   if (!contact) {
     throw new Error(`Contact id: ${contactId} not existed`);
@@ -74,3 +74,15 @@ export const updateStatusContact = async (contactId, favorite) => {
 
   return contact;
 };
+
+const userService = {
+  listUsers,
+  getUserById,
+  getUserByEmail,
+  addUser,
+  removeUser,
+  updateUser,
+  updateStatusContact,
+};
+
+export default userService;

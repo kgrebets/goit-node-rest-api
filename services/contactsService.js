@@ -1,10 +1,10 @@
 import { Contact } from "../db/model/contact.js";
 
-export const listContacts = async ( owner, skip, limit, favorite ) => {
+const listContacts = async (owner, skip, limit, favorite) => {
   const where = { owner };
 
   if (favorite !== undefined) {
-    where.favorite = favorite ; 
+    where.favorite = favorite;
   }
 
   const { rows: contacts, count: total } = await Contact.findAndCountAll({
@@ -16,13 +16,13 @@ export const listContacts = async ( owner, skip, limit, favorite ) => {
   return { contacts, total };
 };
 
-export const getContactById = async (contactId, owner) => {
+const getContactById = async (contactId, owner) => {
   return await Contact.findOne({
     where: { id: contactId, owner },
   });
 };
 
-export const addContact = async (name, email, phone, owner) => {
+const addContact = async (name, email, phone, owner) => {
   const newContact = await Contact.create({
     name,
     email,
@@ -33,7 +33,7 @@ export const addContact = async (name, email, phone, owner) => {
   return newContact;
 };
 
-export const removeContact = async (contactId, owner) => {
+const removeContact = async (contactId, owner) => {
   const contact = await Contact.findOne({
     where: { id: contactId, owner },
   });
@@ -46,7 +46,7 @@ export const removeContact = async (contactId, owner) => {
   return contact;
 };
 
-export const updateContact = async (
+const updateContact = async (
   contactId,
   name,
   email,
@@ -71,7 +71,7 @@ export const updateContact = async (
   return contact;
 };
 
-export const updateStatusContact = async (contactId, favorite, owner) => {
+const updateStatusContact = async (contactId, favorite, owner) => {
   const contact = await Contact.findOne({
     where: { id: contactId, owner },
   });
@@ -84,3 +84,14 @@ export const updateStatusContact = async (contactId, favorite, owner) => {
 
   return contact;
 };
+
+const contactsService = {
+  listContacts,
+  getContactById,
+  addContact,
+  removeContact,
+  updateContact,
+  updateStatusContact,
+};
+
+export default contactsService;
