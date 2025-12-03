@@ -12,8 +12,11 @@ import {
   updateContactSchema,
 } from "../schemas/contactsSchemas.js";
 import validateBody from "../helpers/validateBody.js";
+import { authenticateMiddleware } from "../middlewares/authenticateMiddelware.js";
 
 const contactsRouter = express.Router();
+
+contactsRouter.use(authenticateMiddleware);
 
 contactsRouter.get("/", getAllContacts);
 contactsRouter.get("/:id", getOneContact);
