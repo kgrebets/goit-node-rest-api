@@ -2,10 +2,10 @@ import jwt from "jsonwebtoken";
 
 const { JWT_SECRET } = process.env;
 
-export const createToken = (payload) =>
+const createToken = (payload) =>
   jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
 
-export const verifyToken = (token) => {
+const verifyToken = (token) => {
   try {
     const data = jwt.verify(token, JWT_SECRET);
     return { data, error: null };
@@ -13,3 +13,10 @@ export const verifyToken = (token) => {
     return { error, data: null };
   }
 };
+
+const tokenService = {
+  createToken,
+  verifyToken,
+};
+
+export default tokenService;

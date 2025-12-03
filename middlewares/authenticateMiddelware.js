@@ -1,6 +1,6 @@
 import HttpError from "../helpers/HttpError.js";
-import * as userService from "../services/userServices.js";
-import * as tokenService from "../services/tokenService.js";
+import userService from "../services/userService.js";
+import tokenService from "../services/tokenService.js";
 
 export const authenticateMiddleware = async (req, res, next) => {
   const authorization = req.get("Authorization");
