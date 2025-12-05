@@ -14,6 +14,10 @@ const getUserByEmail = async (email) => {
   return await User.findOne({ where: { email } });
 };
 
+const getUserByEmailVerificationToken = async (email, verificationToken) => {
+  return await User.findOne({ where: { email, verificationToken } });
+};
+
 const addUser = async (password, email, subscription, token) => {
   const avatarURL = gravatar.url(email, { s: "250", d: "mp" }, true);
 
@@ -39,28 +43,12 @@ const removeUser = async (userId) => {
   return user;
 };
 
-const updateUser = async (
-  userId,
-  password,
-  email,
-  subscription,
-  token,
-  avatarURL
-) => {
+const updateUser = async (userId, updates) => {
   const user = await User.findByPk(userId);
+  if (!user) return null;
 
-  if (!user) {
-    return null;
-  }
-
-  if (password !== undefined) user.password = password;
-  if (email !== undefined) user.email = email;
-  if (subscription !== undefined) user.subscription = subscription;
-  if (token !== undefined) user.token = token;
-  if (avatarURL !== undefined) user.avatarURL = avatarURL;
-
-  await user.save();
-  return user;
+  const updatedUser = await user.update(updates);
+  return updatedUser;
 };
 
 const updateStatusContact = async (contactId, favorite) => {
@@ -79,6 +67,7 @@ const userService = {
   listUsers,
   getUserById,
   getUserByEmail,
+  getUserByEmailVerificationToken,
   addUser,
   removeUser,
   updateUser,
